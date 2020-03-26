@@ -4,6 +4,8 @@ Building an Autosuggest System
 
 The Autosuggest enhances the search experience through suggest-as-you-type functionality built into the search form. As one starts to enter search terms, the module detects a pause in typing and offers a list of suggested searches. One can then easily pick one of the suggestions or continue refining the suggestions by typing in more of the query. For example, if you type "student" might offer suggestions that include "student form" or "student grade".
 
+## Architecture of Autosuggest System
+
 ![Autosuggest](autosuggest.png)
 
 Components of our auto suggest system:
