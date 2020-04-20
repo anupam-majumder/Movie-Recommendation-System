@@ -4,30 +4,31 @@
 	html5up.net | @n33co
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
-<html>
+<html ng-app="myapp">
+	
 	<head>
 		<title>Movie Recommendation System</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.js"></script>
 		<script src="../static/js/jquery.min.js"></script>
 		<script src="../static/js/jquery.dropotron.min.js"></script>
 		<script src="../static/js/skel.min.js"></script>
 		<script src="../static/js/skel-layers.min.js"></script>
 		<script src="../static/js/init.js"></script>
-		<noscript>
-			<link rel="stylesheet" href="{{ url_for('static', filename='css/skel.css') }}" />
-			<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-			<!-- {{ url_for('static', filename='css/style.css') }} -->
-			<link rel="stylesheet" href="{{ url_for('static', filename='css/style-desktop.css') }}" />
-		</noscript>
+		 <script src="../static/js/api.js"></script> 
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/skel.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style-desktop.css') }}" />
+		
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
 	</head>
-	<body class="homepage">
+	<body class="homepage" ng-controller="apiController">
 
 		<!-- Header -->
-			<div id="header-wrapper">
+			<div id="header-wrapper" >
 				<header id="header" class="container">
 
 					<!-- Logo -->
@@ -76,12 +77,12 @@
 						</div>
 						<div class="5u">
 							<ul>
-								<form action="localhost:8080/login" method="get" id="form1">
-								<input type="text" id="userid" name="userid">
-								<!-- <input type="submit" class="button big icon fa-arrow-circle-right"> -->
-								<!-- <li><a href="welcome.html" class="button big icon fa-arrow-circle-right">Ok let's go</a></li> -->
+								<form  method="post" id="form1" ng-model="loginform">
+								<input type="text" id="userid" ng-model="userid">
+								
+								<input type="submit" ng-click="callLogin(userid)" class="button big icon fa-arrow-circle-right" value="Ok let's go">
 							</form>
-							<button type="submit" class="button big icon fa-arrow-circle-right" form="form1" value="Submit">Ok let's go</button>
+							<!--button type="submit" class="button big icon fa-arrow-circle-right" form="form1" value="Submit">Ok let's go</button-->
 								<!-- <li><a href="#" class="button alt big icon fa-question-circle">More info</a></li> -->
 							</ul>
 						</div>
@@ -97,7 +98,7 @@
 
 							<!-- Box -->
 								<section class="box feature">
-									<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+									<a href="#" class="image featured"><img src="../static/images/pic01.jpg" alt="" /></a>
 									<div class="inner">
 										<header>
 											<h2>Put something here</h2>
@@ -112,7 +113,7 @@
 
 							<!-- Box -->
 								<section class="box feature">
-									<a href="#" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
+									<a href="#" class="image featured"><img src="../static/images/pic02.jpg" alt="" /></a>
 									<div class="inner">
 										<header>
 											<h2>An interesting title</h2>
@@ -127,7 +128,7 @@
 
 							<!-- Box -->
 								<section class="box feature last">
-									<a href="#" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
+									<a href="#" class="image featured"><img src="../static/images/pic03.jpg" alt="" /></a>
 									<div class="inner">
 										<header>
 											<h2>Oh, and finally ...</h2>
@@ -154,12 +155,12 @@
 										<h3>Interesting stuff</h3>
 										<div class="grid">
 											<div class="row no-collapse 50%">
-												<div class="6u"><a href="#" class="image fit"><img src="images/pic04.jpg" alt="" /></a></div>
-												<div class="6u"><a href="#" class="image fit"><img src="images/pic05.jpg" alt="" /></a></div>
+												<div class="6u"><a href="#" class="image fit"><img src="../static/images/pic04.jpg" alt="" /></a></div>
+												<div class="6u"><a href="#" class="image fit"><img src="../static/images/pic05.jpg" alt="" /></a></div>
 											</div>
 											<div class="row no-collapse 50%">
-												<div class="6u"><a href="#" class="image fit"><img src="images/pic06.jpg" alt="" /></a></div>
-												<div class="6u"><a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a></div>
+												<div class="6u"><a href="#" class="image fit"><img src="../static/images/pic06.jpg" alt="" /></a></div>
+												<div class="6u"><a href="#" class="image fit"><img src="../static/images/pic07.jpg" alt="" /></a></div>
 											</div>
 										</div>
 										<a href="#" class="button icon fa-file-text-o">More</a>
