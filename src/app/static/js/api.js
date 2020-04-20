@@ -1,8 +1,13 @@
 var app=angular.module('myapp',[]);
-
-app.controller('apiController',function($scope,$http){
+var user;
+app.controller('apiController',function($window,$scope,$http,$location){
 $scope.callLogin=function(userid){
-	$http.post('/login',userid).success(function(data){alert("success1");}).error(function(){alert("error");})};
+	user = userid;
+	$http.post('/login',userid).then(function readData(response){
+		console.log(response.data.userid);
+		$window.location.href = '/welcome';
+
+	}
+)};
 }
 );
-
