@@ -13,16 +13,15 @@
 		<meta name="keywords" content="" />
 		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.js"></script>
-		<script src="../static/js/jquery.min.js"></script>
-		<script src="../static/js/jquery.dropotron.min.js"></script>
-		<script src="../static/js/skel.min.js"></script>
-		<script src="../static/js/skel-layers.min.js"></script>
-		<script src="../static/js/init.js"></script>
-		 <script src="../static/js/api.js"></script> 
-		<link rel="stylesheet" href="{{ url_for('static', filename='css/skel.css') }}" />
-		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-		<link rel="stylesheet" href="{{ url_for('static', filename='css/style-desktop.css') }}" />
-		
+		<script src="static/js/jquery.min.js"></script>
+        <script src="static/js/jquery.dropotron.min.js"></script>
+        <script src="static/js/skel.min.js"></script>
+        <script src="static/js/skel-layers.min.js"></script>
+        <script src="static/js/init.js"></script>
+         <script src="static/js/api.js"></script>
+        <link rel="stylesheet" href="static/css/skel.css" />
+        <link rel="stylesheet" href="static/css/style.css" />
+        <link rel="stylesheet" href="static/css/style-desktop.css" />
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
 	</head>
 	<body class="homepage" ng-controller="apiController">
@@ -95,10 +94,10 @@
 				<div class="container">
 					<div class="row">
 						<div class="4u" ng-repeat="x in myarray">
-
+							
 							<!-- Box -->
 								<section class="box feature">
-									
+								<a href="#" class="image featured"><img src="{{x.url}}" alt="{{x.movie}}" /></a>		
 									<div class="inner">
 										<header>
 											<h2>{{x.movie}}</h2>
