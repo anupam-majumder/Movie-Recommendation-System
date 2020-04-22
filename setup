@@ -1,0 +1,14 @@
+step1. copy all the files of html folder to /var/www/html/   #since we are hosting the UI using apache server(if apache is not installed please install apache)
+step2. run the api.py #it will train the machine learnig model and start the api server for future request
+step3. in the browser enable cors if server and UI both are on the same system to avoid cross origin error(for firefox just enable cors adon)
+step4. in the browser put the url localhost:80
+
+
+SOFTWARE STACK and TECHNOLOGIES
+
+Flask
+apache
+mysql 
+
+UI: html, css, javascript, angularJS 
+Backend: python
