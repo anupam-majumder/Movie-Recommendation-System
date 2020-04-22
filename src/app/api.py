@@ -1,6 +1,7 @@
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, json
-app = Flask(__name__)
+import mysql.connector
 
+app = Flask(__name__)
 
 @app.route('/')
 def home():
@@ -17,7 +18,10 @@ def login():
     print(request.data)
     if request.method == 'POST':
         print("hi this is inside post")
-        return json.dumps({"userid":request.data})
+        return json.dumps({"userid":['url1','url2','url3']})
+
+def __get_movies():
+    pass
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
