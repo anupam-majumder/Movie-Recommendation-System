@@ -18,11 +18,6 @@ connection = mysql.connector.connect(host=__localhost,database=__database,user=_
 def home():
     print("Movie recommendsation system is on!")
 
-
-@app.route('/welcome', methods=['GET', 'POST'])
-def welcome():
-    return render_template('welcome.html')
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
