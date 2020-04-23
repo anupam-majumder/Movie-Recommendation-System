@@ -2,6 +2,7 @@ step1. copy all the files of html folder to /var/www/html/   #since we are hosti
 step2. run the api.py #it will train the machine learnig model and start the api server for future request
 step3. in the browser enable cors if server and UI both are on the same system to avoid cross origin error(for firefox just enable cors adon)
 step4. in the browser put the url localhost:80
+step5. install mysql and run (mysql -u [username] -p [databaseName] < movies_data.sql)
 
 
 SOFTWARE STACK and TECHNOLOGIES
