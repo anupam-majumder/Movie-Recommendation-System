@@ -161,4 +161,4 @@ def train(train_sparse,test, n_epochs = 30, n_factors = 20) :
 if __name__ == "__main__":
 	train_dataset, uid_dict, iid_dict, test_dataset = Read_Data(file_name,True)
 	user_bias,item_bias,item_pref_factor,implicit_feedback,neighbouhood_weights,item_factor,user_factor,global_mean = train(train_dataset,test_dataset,30)
-	np.savez("integrated_model",user_bias,item_bias,item_pref_factor,implicit_feedback,neighbouhood_weights,item_factor,user_factor,global_mean)	
+	np.savez(ml_100k_path+"integrated_model",user_bias,item_bias,item_pref_factor,implicit_feedback,neighbouhood_weights,item_factor,user_factor,global_mean)	
