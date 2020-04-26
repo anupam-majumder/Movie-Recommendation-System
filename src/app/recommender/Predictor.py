@@ -10,7 +10,7 @@ import math
 from random import random
 import pickle
 
-ml_100k_path = "../../../ml-100k/"
+ml_100k_path = "../../ml-100k/"
 
 
 class Save_Predictions:
@@ -74,7 +74,7 @@ class Save_Predictions:
         with open(os.path.expanduser(data_file_path), errors='ignore') as item_file_path:
             raw_ratings = [self.parse_line_pipe(line) for line in itertools.islice(item_file_path, 0, None)]
         for i in range(len(raw_ratings)):
-            self.movie_dict[raw_ratings[i][0]] = raw_ratings[i][1:]
+            self.movie_dict[raw_ratings[i][0]] = raw_ratings[i][:]
         return raw_ratings
 
 
@@ -133,7 +133,7 @@ class Predict_movies:
             movie_str[j[0]]=[]
             for it in range(5,23):
                 if j[it].strip()=='1':
-                    movie_str[j[0]].append(self.genre[it-5])
+                    movie_str[j[0]].append(self.genre[it-6])
             pred_movie_str_list.append(movie_str)
             
         return pred_movie_str_list
@@ -158,7 +158,7 @@ class Seen_movies:
             movie_str[j[0]]=[]
             for it in range(5,23):
                 if j[it].strip()=='1':
-                    movie_str[j[0]].append(self.genre[it-5])
+                    movie_str[j[0]].append(self.genre[it-6])
             seen_movie_str_list.append(movie_str)
             
         return seen_movie_str_list
