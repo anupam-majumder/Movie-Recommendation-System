@@ -1,7 +1,7 @@
 def txt_dump(list_of_tuples):
 
 	delimiter = '\t'
-	with open('temp.txt', mode='w') as file_handler:
+	with open('temp.txt', mode='a') as file_handler:
 		for _tuple in list_of_tuples:
 			user = str(_tuple[0])
 			movie = str(_tuple[1])
