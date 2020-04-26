@@ -23,7 +23,6 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
-    print(request.data)
     if request.method == 'POST':
         movie_lists = {}
         movie_lists["recommends"] = __get_movies(["Toy Story (1995)","GoldenEye (1995)","Four Rooms (1995)"])
@@ -36,12 +35,11 @@ def login():
 @app.route('/getRecommendations', methods=['GET', 'POST'])
 def get_recommendations():
     error = None
-    print(request.data)
     if request.method == 'POST':
         #method call for prediction
         userid = request.data.decode('utf-8')
         predict_movies = Predictor.Predict_movies()
-        recommendations = predict_movies.predict(userid)#[{"Toy Story (1995)":["horror","romance"]},{"GoldenEye (1995)":["action","comedy"]},{"Four Rooms (1995)":["action","comedy"]}] #get_predicted_movies(userid)
+        recommendations = predict_movies.predict(userid)
         #get movie url from db
         movies = []
         genre = []
@@ -63,14 +61,12 @@ def get_recommendations():
 @app.route('/getSeen', methods=['GET', 'POST'])
 def get_seen():
     error = None
-    print(request.data)
     if request.method == 'POST':
         #method call for prediction
         userid = request.data.decode('utf-8')
         seen_prediction_obj = Predictor.Seen_movies()
-        seen_movies = seen_prediction_obj.seen(userid)#[{"Four Rooms (1995)":["action","comedy"]},{"Toy Story (1995)":["horror","romance"]},{"GoldenEye (1995)":["action","comedy"]}] #get_seen_movies(userid)
+        seen_movies = seen_prediction_obj.seen(userid)
         #get movie url from db
-        print(seen_movies)
         movies = []
         genre = []
         for movie in seen_movies:
@@ -91,7 +87,6 @@ def get_seen():
 @app.route('/getRating', methods=['GET', 'POST'])
 def get_rating():
     error = None
-    print(request.data)
     if request.method == 'POST':
         #method call for prediction
         userid = request.data.decode('utf-8')
@@ -103,37 +98,57 @@ def get_rating():
         for i in range(len(genre)):
             movie_lists["recommends"][i]["genre"] = genre[i]
         movie_lists["userid"] =  request.data
-        print(movie_lists)
         return json.dumps(movie_lists)
 
     else:
         return json.dumps({"success":True})
 
+@app.route('/setRating', methods=['GET', 'POST'])
+def set_rating():
+    error = None
+    if request.method == 'POST':
+        #method call for prediction
+        request_data = request.data.decode('utf-8')
+        request_data = json.loads(request_data)
+        new_ratings = []
+        for req in request_data:
+            if req["rating"] == "0":
+                continue
+            temp_tup = []
+            temp_tup.append(req["userid"])
+            temp_tup.append(req["id"])
+            temp_tup.append(int(req["rating"]))
+            new_ratings.append(tuple(temp_tup))
+        print(new_ratings)
+        return json.dumps({"success":True})
+
+    else:
+        return json.dumps({"success":True})
+
+
 def __get_movies_to_rate():
     lst_of_movies = []
     if connection.is_connected():
-        sql_select_Query = "select Name,Poster from "+__table+" limit 12;"
+        sql_select_Query = "select ID,Name,Poster from "+__table+" limit 12;"
         cursor = connection.cursor()
         cursor.execute(sql_select_Query)
         records = cursor.fetchall()
         for record in records:
             movie_obj = {}
-            movie_obj["movie"] = record[0]
-            movie_obj["url"] = record[1]
+            movie_obj["id"] =  record[0]
+            movie_obj["movie"] = record[1]
+            movie_obj["url"] = record[2]
             lst_of_movies.append(movie_obj)
     return lst_of_movies #[{'movie':'movie_name','url','url2'}]
 
 def __get_movies(predicted):
     lst_of_movies = []
     if connection.is_connected():
-        print(predicted)
         for movie in predicted:
             sql_select_Query = "select Name,Poster from "+__table+" where ID="+movie+";"
             cursor = connection.cursor()
             cursor.execute(sql_select_Query)
             records = cursor.fetchall()
-            print("records = ",records[0][0])
-            print("records = ",records[0][1])
             movie_obj = {}
             movie_obj["movie"] = records[0][0]
             movie_obj["url"] = records[0][1]

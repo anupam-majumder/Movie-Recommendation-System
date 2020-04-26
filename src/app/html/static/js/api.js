@@ -6,7 +6,8 @@ $scope.hideNav = false;
 $scope.hidePredicted = false;
 $scope.hideSeen = false;
 $scope.hideRate = false;
-$scope.userid = ""
+$scope.userid = "";
+
 $scope.callLogin=function(userid){
 	user = userid;
 	$http.post('http://localhost:12394/getSeen',userid).then(function readData(response){
@@ -51,5 +52,26 @@ $scope.callRating=function(){
 	}
 )};
 
+$scope.callPutRating=function(){
+    let i, ratings=[];
+    
+    for(i=0; i<$scope.rate.length;i++){
+        let temp={};
+        temp["userid"] = $scope.userid;
+        temp["id"]=$scope.rate[i].id;
+        temp["rating"]=document.getElementById($scope.rate[i].id).value;
+        ratings.push(temp);        
+    }
+    console.log(ratings);
+	$http.post('http://localhost:12394/setRating',ratings).then(function readData(response){
+		console.log(response.data);
+        $scope.hideRate = false;
+        $scope.hide = false;
+        $scope.hideSeen = true;
+        $scope.hideNav = true;
+        $scope.hidePredicted = false;
+        
+	}
+)};    
 }
 );
