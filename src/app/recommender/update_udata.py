@@ -1,4 +1,5 @@
 import os
+from os.path import dirname, abspath
 def ratings_match(line_list,line_split):
     if(line_list[0]==line_split[0] and line_list[1]==line_split[1]):
         return True
@@ -18,11 +19,15 @@ def remove_duplicate_ratings(towrite):
             str_return = str_return+lines[i]+'\n'
     return str_return
 
-#edit filepath
-filepath = ''
+current_file_path = abspath(__file__)
+ml_100k_path = current_file_path
+for i in range(4):
+    ml_100k_path = dirname(ml_100k_path)
+ml_100k_path += "/ml-100k/"
+filepath = ml_100k_path
 data_file = open(filepath +'u.data','r')
 data_file_write = open(filepath +'temp.data','w')
-temp_data = open(filepath + 'temp.txt','r')
+temp_data = open('temp.txt','r')
 towrite = temp_data.read()
 towrite = remove_duplicate_ratings(towrite)
 temp_lines = towrite.split('\n')
@@ -41,8 +46,7 @@ data_file_write.close()
 temp_data.close()
 
 os.remove(filepath+'u.data')
-os.remove(filepath+'temp.txt')
-f = open(filepath+'temp.txt','a')
+os.remove('temp.txt')
+f = open('temp.txt','a')
 f.close()
 os.rename(filepath+'temp.data',filepath+'u.data')
-
