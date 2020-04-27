@@ -13,3 +13,11 @@ mysql
 
 UI: html, css, javascript, angularJS 
 Backend: python
+
+Run the following commands with root privileges to install the required dependencies:
+
+pip3 install flask mysql-connector schedule
+sudo apt install apache2 mysql-server
+sudo cp -r ./Movie-Recommendation-System/src/app/html /var/www/
+
+mysql -u (username) -p (database_name)
