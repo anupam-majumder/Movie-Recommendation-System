@@ -28,6 +28,14 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+        <!--style type="text/css">
+        .default{
+            background:skyblue;
+        }
+        .clicked{
+            background:yellow;
+        }
+        </style-->
 	</head>
 	<body class="homepage" ng-controller="apiController">
 
@@ -38,15 +46,15 @@
 					<!-- Logo -->
 						<div id="logo">
 							<h1><a href="/">resy</a></h1>
-                            <span><b>Movie Recommendation System</b></span>
 						</div>
+                        <span style="line-height: 2.5em; letter-spacing: 0.025em; font-size: 1.5em;"><b>Movie Recommendation System</b></span>
 					<!-- Nav -->
 						<nav id="nav" ng-show="hideNav">
 							<ul>
-                                <li><input type="submit" value="{{userid}}" style="background-color: beige; color:black;"></li>
-                                <li><input type="submit" ng-click="callLogin(userid)" class="button icon fa-arrow-circle-right" value="Seen Movies" style="background-color: gray;"></li>
-								<li><input type="submit" ng-click="callPredicted(userid)" style="background-color: gray;" class="button icon fa-arrow-circle-right" value="Predicted Movies"></li>
-                                <li><input type="submit" ng-click="callRating()"style="background-color: gray;" class="button icon fa-arrow-circle-right" value="Rate Movies"></li>
+                                <li><input type="submit" ng-disabled=true value="User Id: {{userid}}" style="background-color: beige; color:black;  height: 60px; border: 2px solid black; vertical-align:center;"></li>
+                                <li><input type="submit" ng-click="callLogin(userid)" class="button icon fa-arrow-circle-right" value="Seen Movies" style="background-color: {{seenButton}};height: 60px; text-align: center;"></li>
+								<li><input type="submit" ng-click="callPredicted(userid)" style="background-color: {{predButton}};height: 60px;" class="button icon fa-arrow-circle-right" value="Predicted Movies"></li>
+                                <li><input type="submit" ng-click="callRating()"style="background-color: {{rateButton}};height: 60px;" class="button icon fa-arrow-circle-right" value="Rate Movies"></li>
 							</ul>
 						</nav>
 
@@ -64,7 +72,7 @@
 						<div class="5u">
 							<ul>
 								<form  method="post" id="form1" ng-model="loginform">
-								<input type="text" id="userid" ng-model="userid" placeholder="userid">
+								<input type="text" id="userid" ng-model="userid" placeholder="userid" ng-required ="true">
 								<br/>
 								<input type="submit" ng-click="callLogin(userid)" class="button icon fa-arrow-circle-right" value="Ok let's go">
                                 <br/><br/><br/>

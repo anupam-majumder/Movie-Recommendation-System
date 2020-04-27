@@ -1,6 +1,9 @@
 var app=angular.module('myapp',[]);
 
 app.controller('apiController',function($scope,$http){
+$scope.seenButton = 'gray';
+$scope.predButton = 'gray';
+$scope.rateButton = 'gray';
 $scope.hide = true;
 $scope.hideNav = false;
 $scope.hidePredicted = false;
@@ -9,6 +12,9 @@ $scope.hideRate = false;
 $scope.userid = "";
 $scope.active = true;
 $scope.callLogin=function(userid){
+    $scope.seenButton = 'skyblue';
+    $scope.predButton = 'gray';
+    $scope.rateButton = 'gray';
 	user = userid;
 	$http.post('http://localhost:12394/getSeen',userid).then(function readData(response){
 		console.log(response.data.userid);
@@ -24,6 +30,9 @@ $scope.callLogin=function(userid){
 )};
      
 $scope.callPredicted=function(userid){
+    $scope.seenButton = 'gray';
+    $scope.predButton = 'skyblue';
+    $scope.rateButton = 'gray';
 	user = userid;
 	$http.post('http://localhost:12394/getRecommendations',$scope.userid).then(function readData(response){
 		console.log(response.data.userid);
@@ -38,6 +47,9 @@ $scope.callPredicted=function(userid){
 )};
     
 $scope.callRating=function(){
+    $scope.seenButton = 'gray';
+    $scope.predButton = 'gray';
+    $scope.rateButton = 'skyblue';
 	$http.post('http://localhost:12394/getRating',$scope.userid).then(function readData(response){
 		console.log(response.data.userid);
         console.log(response.data.recommends);
@@ -71,6 +83,11 @@ $scope.callPutRating=function(){
         $scope.hidePredicted = false;
         
 	}
-)};    
+)};   
+    
+$scope.myButton = 'default';
+ $scope.changeBgColor = function() {
+     $scope.myButton = "clicked";
+};
 }
 );
