@@ -254,7 +254,7 @@ train_dataset, uid_dict, iid_dict, test_dataset = Read_Data(file_name,True)
 recommender = model(train_dataset)
 recommender.train(train_dataset,test_dataset,1,uid_dict,iid_dict)
 
-np.savez(ml_100k_path+"integrated_models",recommender.user_bias,recommender.item_bias,recommender.item_preference,recommender.implicit_feedback,recommender.weights,recommender.item_factor,recommender.user_factor,recommender.global_mean)
+np.savez(ml_100k_path+"integrated_model",recommender.user_bias,recommender.item_bias,recommender.item_preference,recommender.implicit_feedback,recommender.weights,recommender.item_factor,recommender.user_factor,recommender.global_mean)
 
 
 
