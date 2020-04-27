@@ -130,7 +130,7 @@ def set_rating():
 def __get_movies_to_rate():
     lst_of_movies = []
     if connection.is_connected():
-        sql_select_Query = "select ID,Name,Poster from "+__table+" limit 12;"
+        sql_select_Query = "select ID,Name,Poster from "+__table+" order by rand() limit 12;"
         cursor = connection.cursor()
         cursor.execute(sql_select_Query)
         records = cursor.fetchall()
