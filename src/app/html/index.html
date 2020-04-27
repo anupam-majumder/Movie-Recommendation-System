@@ -22,7 +22,11 @@
         <link rel="stylesheet" href="static/css/skel.css" />
         <link rel="stylesheet" href="static/css/style.css" />
         <link rel="stylesheet" href="static/css/style-desktop.css" />
-				<link rel="stylesheet" href="static/css/star.css" />
+        <!--script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-animate.js"></script-->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
 	</head>
 	<body class="homepage" ng-controller="apiController">
@@ -34,12 +38,12 @@
 					<!-- Logo -->
 						<div id="logo">
 							<h1><a href="/">resy</a></h1>
-							<span>Movie Recommendation System</span>
+                            <span><b>Movie Recommendation System</b></span>
 						</div>
-
 					<!-- Nav -->
 						<nav id="nav" ng-show="hideNav">
 							<ul>
+                                <li><input type="submit" value="{{userid}}" style="background-color: beige; color:black;"></li>
                                 <li><input type="submit" ng-click="callLogin(userid)" class="button icon fa-arrow-circle-right" value="Seen Movies" style="background-color: gray;"></li>
 								<li><input type="submit" ng-click="callPredicted(userid)" style="background-color: gray;" class="button icon fa-arrow-circle-right" value="Predicted Movies"></li>
                                 <li><input type="submit" ng-click="callRating()"style="background-color: gray;" class="button icon fa-arrow-circle-right" value="Rate Movies"></li>
@@ -63,7 +67,7 @@
 								<input type="text" id="userid" ng-model="userid" placeholder="userid">
 								<br/>
 								<input type="submit" ng-click="callLogin(userid)" class="button icon fa-arrow-circle-right" value="Ok let's go">
-                                <br/><br/><br/><br/><br/>
+                                <br/><br/><br/>
 							</form>
                             </ul>
 						</div>
@@ -75,19 +79,19 @@
 			<div id="features-wrapper" ng-show="hideSeen">
 
 				<div class="container">
-                    <h1 align="center">Seen Movies for {{userid}}</h1>
 					<div class="row">
 						<div class="3u" ng-repeat="x in mv">
 
 							<!-- Box -->
 								<section class="box feature">
-								<a href="#" class="image featured"><img src="{{x.url}}" alt="{{x.movie}}" /></a>
-									<div class="inner">
-										<header>
-											<h2>{{x.movie}}</h2>
-										</header>
+								<a href="#" class="image featured"><img ng-src="{{x.url}}" altSrc="static/images/default.png" onerror="this.src = $(this).attr('altSrc')" height="300px"/></a>
+                                    <div class="container">
+                                      <a href="#{{x.id}}" class="btn btn-info" data-toggle="collapse">Movie Info</a>
+                                      <div id="{{x.id}}" class="collapse">                                        
+								        <h2>{{x.movie}}</h2>										
 										<h4 style="color:dimgray;">Genre: {{x.genre}}</h4>
-									</div>
+                                      </div>
+                                    </div>
 								</section>
 
 						</div>
@@ -100,19 +104,20 @@
 			<div id="features-wrapper" ng-show="hidePredicted">
 
 				<div class="container">
-                    <h1 align="center">Predicted Movies for {{userid}}</h1>
 					<div class="row">
 						<div class="3u" ng-repeat="x in pre">
 
 							<!-- Box -->
-								<section class="box feature">
-								<a href="#" class="image featured"><img src="{{x.url}}" alt="" /></a>
-									<div class="inner">
-										<header>
-											<h2>{{x.movie}}</h2>
-										</header>
+								
+                                <section class="box feature">
+								<a href="#" class="image featured"><img ng-src="{{x.url}}" altSrc="static/images/default.png" onerror="this.src = $(this).attr('altSrc')" height="300px"/></a>
+                                    <div class="container">
+                                      <a href="#{{x.id}}" class="btn btn-info" data-toggle="collapse">Movie Info</a>
+                                      <div id="{{x.id}}" class="collapse">                                        
+								        <h2>{{x.movie}}</h2>										
 										<h4 style="color:dimgray;">Genre: {{x.genre}}</h4>
-									</div>
+                                      </div>
+                                    </div>
 								</section>
 
 						</div>
@@ -123,19 +128,36 @@
 			<div id="features-wrapper" ng-show="hideRate">
 
 				<div class="container">
-                    <h1 align="center">Rate Movies</h1>
 					<div class="row">
 						<div class="3u" ng-repeat="x in rate">
-							<!-- Box -->
-								<section class="box feature">
-								<a href="#" class="image featured"><img src="{{x.url}}" alt="{{x.movie}}" style="height:300px" /></a>
-									<div class="inner">
-										<header>
-											<h2>{{x.movie}}</h2>
-										</header>
-										<p>Rating:</p><input type="number" id="{{x.id}}" value="0" min="1" max="5">
-									</div>
+							<!-- Box -->                            
+                                <section class="box feature">
+								<a href="#" class="image featured"><img ng-src="{{x.url}}" altSrc="static/images/default.png" onerror="this.src = $(this).attr('altSrc')" height="300px"/></a>
+                                    <div class="container">
+                                      <a href="#{{x.id}}_1" class="btn btn-info" data-toggle="collapse">Movie Info</a>
+                                      <div id="{{x.id}}_1" class="collapse">                                        
+								        <h2>{{x.movie}}</h2>										
+                                      </div>
+                                    </div>
+                                    <div class="inner">
+                                    <p>Rating:</p><input type="number" id="{{x.id}}" value="0" min="1" max="5">
+                                    </div>
 								</section>
+                            <!--section class="box feature">
+                             <div class="expandcollapse-item">
+								<img ng-src="{{x.url}}" altSrc="static/images/default.png" onerror="this.src = $(this).attr('altSrc')" height="300px"/>
+                                    <div ng-click="active = !active" ng-class="{'expandcollapse-heading-collapsed': active, 'expandcollapse-heading-expanded': !active}">
+                                      <p>Movie Info</p>                                      
+                                    </div>
+                                    <div class="slideDown expand-collapse-content" ng-hide="active" >                        
+                                        <p>{{x.movie}}</p>								
+                                    </div>                                    
+								</div>
+                                
+                                <div class="inner">
+                                    <p>Rating:</p><input type="number" id="{{x.id}}" value="0" min="1" max="5">
+                                </div>
+                            </section-->
 
 						</div>
                         <input type="submit" ng-click="callPutRating()" class="button icon fa-arrow-circle-right" value="Submit Rating">

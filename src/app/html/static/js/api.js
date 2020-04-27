@@ -7,7 +7,7 @@ $scope.hidePredicted = false;
 $scope.hideSeen = false;
 $scope.hideRate = false;
 $scope.userid = "";
-
+$scope.active = true;
 $scope.callLogin=function(userid){
 	user = userid;
 	$http.post('http://localhost:12394/getSeen',userid).then(function readData(response){
@@ -54,7 +54,6 @@ $scope.callRating=function(){
 
 $scope.callPutRating=function(){
     let i, ratings=[];
-    
     for(i=0; i<$scope.rate.length;i++){
         let temp={};
         temp["userid"] = $scope.userid;

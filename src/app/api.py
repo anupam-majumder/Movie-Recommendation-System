@@ -1,7 +1,8 @@
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, json
 import mysql.connector
 from recommender import Predictor
-
+from recommender import rating_updater
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -111,15 +112,22 @@ def set_rating():
         request_data = request.data.decode('utf-8')
         request_data = json.loads(request_data)
         new_ratings = []
+        print(request_data)
+        now = datetime.now()
+        timestamp = datetime.timestamp(now)
         for req in request_data:
+            if "rating" not in req:
+                continue
             if req["rating"] == "0":
                 continue
             temp_tup = []
             temp_tup.append(req["userid"])
             temp_tup.append(req["id"])
             temp_tup.append(int(req["rating"]))
+            temp_tup.append(int(timestamp))
             new_ratings.append(tuple(temp_tup))
         print(new_ratings)
+        #rating_updater(new_ratings)
         return json.dumps({"success":True})
 
     else:
@@ -145,15 +153,17 @@ def __get_movies(predicted):
     lst_of_movies = []
     if connection.is_connected():
         for movie in predicted:
-            sql_select_Query = "select Name,Poster from "+__table+" where ID="+movie+";"
+            sql_select_Query = "select ID,Name,Poster from "+__table+" where ID="+movie+";"
             cursor = connection.cursor()
             cursor.execute(sql_select_Query)
             records = cursor.fetchall()
             movie_obj = {}
-            movie_obj["movie"] = records[0][0]
-            movie_obj["url"] = records[0][1]
+            movie_obj["id"] = records[0][0]
+            movie_obj["movie"] = records[0][1]
+            movie_obj["url"] = records[0][2]
             lst_of_movies.append(movie_obj)
     return lst_of_movies #[{'movie':'movie_name','url','url2'}]
+    
 
 if __name__ == '__main__':
     save_prediction_obj = Predictor.Save_Predictions()
