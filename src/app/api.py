@@ -6,20 +6,20 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-__port = 12394
-__host = '0.0.0.0'
-__database = 'movies'
-__localhost = 'localhost'
-__user = 'root'
-__password = '12345678'
-__table = 'MovieURL'
+__port = None
+__host = None
+__database = None
+__localhost = None
+__user = None
+__password = None
+__table = None
 
+connection = None
 
-connection = mysql.connector.connect(host=__localhost,database=__database,user=__user,password=__password)
 
 @app.route('/')
 def home():
-    print("Movie recommendsation system is on!")
+    print("Movie recommendation system is on!")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -37,11 +37,9 @@ def login():
 def get_recommendations():
     error = None
     if request.method == 'POST':
-        #method call for prediction
         userid = request.data.decode('utf-8')
         predict_movies = Predictor.Predict_movies()
         recommendations = predict_movies.predict(userid)
-        #get movie url from db
         movies = []
         genre = []
         for movie in recommendations:
@@ -63,11 +61,9 @@ def get_recommendations():
 def get_seen():
     error = None
     if request.method == 'POST':
-        #method call for prediction
         userid = request.data.decode('utf-8')
         seen_prediction_obj = Predictor.Seen_movies()
         seen_movies = seen_prediction_obj.seen(userid)
-        #get movie url from db
         movies = []
         genre = []
         for movie in seen_movies:
@@ -89,9 +85,7 @@ def get_seen():
 def get_rating():
     error = None
     if request.method == 'POST':
-        #method call for prediction
         userid = request.data.decode('utf-8')
-        #get movie url from db
         movies = []
         genre = []
         movie_lists = {}
@@ -108,7 +102,6 @@ def get_rating():
 def set_rating():
     error = None
     if request.method == 'POST':
-        #method call for prediction
         request_data = request.data.decode('utf-8')
         request_data = json.loads(request_data)
         new_ratings = []
@@ -127,7 +120,7 @@ def set_rating():
             temp_tup.append(int(timestamp))
             new_ratings.append(tuple(temp_tup))
         print(new_ratings)
-        #rating_updater(new_ratings)
+        rating_updater.txt_dump(new_ratings)
         return json.dumps({"success":True})
 
     else:
@@ -147,25 +140,44 @@ def __get_movies_to_rate():
             movie_obj["movie"] = record[1]
             movie_obj["url"] = record[2]
             lst_of_movies.append(movie_obj)
-    return lst_of_movies #[{'movie':'movie_name','url','url2'}]
+    return lst_of_movies
 
 def __get_movies(predicted):
     lst_of_movies = []
     if connection.is_connected():
         for movie in predicted:
-            sql_select_Query = "select ID,Name,Poster from "+__table+" where ID="+movie+";"
+            sql_select_Query = "select Name,Poster from "+__table+" where ID="+movie+";"
             cursor = connection.cursor()
             cursor.execute(sql_select_Query)
             records = cursor.fetchall()
             movie_obj = {}
-            movie_obj["id"] = records[0][0]
-            movie_obj["movie"] = records[0][1]
-            movie_obj["url"] = records[0][2]
+            movie_obj["movie"] = records[0][0]
+            movie_obj["url"] = records[0][1]
             lst_of_movies.append(movie_obj)
-    return lst_of_movies #[{'movie':'movie_name','url','url2'}]
-    
+    return lst_of_movies
+
+def __load_credentials_and_variables(cred_file="credentials.txt"):
+    dicti = {}
+    f = open(cred_file, mode='r')
+    for line in f.readlines():
+       line = line.strip()
+       key, val = line.split('=')
+       key = key.strip()
+       val = val.strip()
+       dicti[key] = val
+    f.close()
+    global __localhost, __database, __user, __password, __port, __table, __host, connection
+    __localhost = dicti["__localhost"]
+    __user = dicti["__user"]
+    __password = dicti["__password"]
+    __port = int(dicti["__port"])
+    __database = dicti["__database"]
+    __table = dicti["__table"]
+    __host = dicti["__host"]
+    connection = mysql.connector.connect(host=__localhost,database=__database,user=__user,password=__password)
 
 if __name__ == '__main__':
+    __load_credentials_and_variables()
     save_prediction_obj = Predictor.Save_Predictions()
     save_prediction_obj.generate_predictions()
     app.run(host=__host, port=__port, debug=True)
