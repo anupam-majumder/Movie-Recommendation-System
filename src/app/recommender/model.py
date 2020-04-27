@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.sparse import csr_matrix
-import tools as tl
+import os
+from os.path import dirname, abspath
 import pandas as pd
 from datetime import datetime
 import os
@@ -19,28 +20,20 @@ class model :
 		self.user_num = matrix_csc.shape[0]
 		self.item_num = matrix_csc.shape[1]
 
-		#global mean
 		self.global_mean = np.sum(matrix_csc.data) / matrix_csc.size
 
-		#user bias
 		self.user_bias = np.zeros(self.user_num, np.double)
 
-		#item bias
 		self.item_bias = np.zeros(self.item_num, np.double)
 
-		#user factor
 		self.user_factor = np.zeros((self.user_num, self.n_factors), np.double) + .1
 
-		#item factor
 		self.item_factor = np.zeros((self.item_num, self.n_factors), np.double) + .1
 
-		#item preference facotor
 		self.item_preference = np.zeros((self.item_num, self.n_factors), np.double) + .1
 
-		#weights for neihbourhood
 		self.weights = np.zeros((self.item_num,self.item_num))
 
-		#implicit feedback
 		self.implicit_feedback = np.zeros((self.item_num,self.item_num))
 
 
@@ -92,14 +85,11 @@ class model :
 
 
 	def _estimate(self,test, measures, train_dataset,uid_dict,iid_dict):
-		# global uid_dict,iid_dict
 
 		users_mean = self.get_user_means()
 		items_mean = self.get_item_means()
 
 		raw_test_dataset = test
-		# global_mean = np.sum(train_dataset.data) / train_dataset.size
-
 
 		all = len(raw_test_dataset)
 		errors = []
@@ -195,7 +185,16 @@ class model :
 		    print("Err = ",self.estimate(test,"rmse",train_sparse,uid_dict,iid_dict))
 		    print("Time For Error :: "+str(datetime.now()-start))
 
-file_name = "../ml-100k/u.data"
+# file_name = "../ml-100k/u.data"
+
+current_file_path = abspath(__file__)
+ml_100k_path = current_file_path
+for i in range(4):
+	ml_100k_path = dirname(ml_100k_path)
+ml_100k_path += "/ml-100k/"
+
+file_name = ml_100k_path+"u.data"
+
 
 def mapping(train) :
     uid_dict = {}
@@ -252,6 +251,11 @@ def Read_Data(file_name,shuffle=True) :
 
 train_dataset, uid_dict, iid_dict, test_dataset = Read_Data(file_name,True)
 
-A = model(train_dataset)
-print(A.train(train_dataset,test_dataset,20,uid_dict,iid_dict))
+recommender = model(train_dataset)
+recommender.train(train_dataset,test_dataset,1,uid_dict,iid_dict)
+
+np.savez(ml_100k_path+"integrated_model",recommender.user_bias,recommender.item_bias,recommender.item_preference,recommender.implicit_feedback,recommender.weights,recommender.item_factor,recommender.user_factor,recommender.global_mean)
+
+
+
 
