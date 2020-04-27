@@ -146,13 +146,14 @@ def __get_movies(predicted):
     lst_of_movies = []
     if connection.is_connected():
         for movie in predicted:
-            sql_select_Query = "select Name,Poster from "+__table+" where ID="+movie+";"
+            sql_select_Query = "select ID,Name,Poster from "+__table+" where ID="+movie+";"
             cursor = connection.cursor()
             cursor.execute(sql_select_Query)
             records = cursor.fetchall()
             movie_obj = {}
-            movie_obj["movie"] = records[0][0]
-            movie_obj["url"] = records[0][1]
+            movie_obj["id"] = records[0][0]
+            movie_obj["movie"] = records[0][1]
+            movie_obj["url"] = records[0][2]
             lst_of_movies.append(movie_obj)
     return lst_of_movies
 
